@@ -1,4 +1,4 @@
-# Проект "Mesto.Russia".
+# Проект "Movie-explorer".
 ## Описание
 
 Это `backend` проекта "Movie-explorer".
