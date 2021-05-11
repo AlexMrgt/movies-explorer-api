@@ -48,22 +48,22 @@
     ...
 ```
 
-+ `POST` /cards - создает новую карточку и возвращает ее в формате JSON
-+ `DELETE` /cards/:cardId - удаляет карточку по соответствующему ID, если она принадлежит пользователю
++ `POST` /movies - создает новую карточку и возвращает ее в формате JSON
++ `DELETE` /movies/:movieId - удаляет карточку по соответствующему ID, если она принадлежит пользователю
 
 ## Технологии
 
 + Expressjs
-+ nodemon
 + MongoDB
 + mongoose
-+ dotenv
 + cors
-+ helmet
 + celebrate
++ validator
++ jsonwebtoken
++ helmet
 + bcryptjs
 + winston
 + express-winston
-+ jsonwebtoken
-+ validator
++ dotenv
 + eslint
++ nodemon
