@@ -1,6 +1,9 @@
 const User = require('../models/user');
 const NotFoundError = require('../errors/NotFoundError');
 const BadRequestError = require('../errors/BadRequestError');
+const ConflictError = require('../errors/ConflictError');
+
+const { NOT_FOUND_USER_ON_EDIT } = require('../utils/constants');
 
 // в образовательных целях
 // решил переписать на async/await - понятнее и лаконичнее код, к слову, не стал, а должен бы
@@ -26,14 +29,14 @@ const editCurrentUser = async (req, res, next) => {
       { name, email },
       { new: true, runValidators: true },
     )
-      .orFail(() => new NotFoundError('Пользователь с таким ID не найден'));
+      .orFail(() => new NotFoundError(NOT_FOUND_USER_ON_EDIT));
     return res.status(200).send(updatedUser);
   } catch (err) {
     if (err.name === 'ValidationError') {
       return next(new BadRequestError(`${Object.values(err.errors).map((error) => error.message).join(', ')}`));
     }
     if (err.code === 11000) {
-      return next(new BadRequestError(`Email '${email}' уже используется`));
+      return next(new ConflictError(`Email '${email}' уже используется`));
     }
     return next(err);
   }

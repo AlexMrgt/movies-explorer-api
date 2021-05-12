@@ -18,12 +18,13 @@ const createUser = (req, res, next) => {
     .then((user) => res.status(201).send({ data: user.toJSON() }))
     .catch((err) => {
       if (err.code === 11000) {
-        next(new ConflictError(`${Object.keys(err.keyValue).map((key) => `Пользователь с таким ${key} уже существует`)}`));
-      } else if (err.name === 'ValidationError') {
-        next(new BadRequestError(`${Object.values(err.errors).map((error) => error.message).join(', ')}`));
-      } else {
-        next(err);
+        return next(new ConflictError(`${Object.keys(err.keyValue).map((key) => `Пользователь с таким ${key} уже существует`)}`));
+      } if (err.name === 'ValidationError') {
+        return next(new BadRequestError(`${Object.values(err.errors).map((error) => error.message).join(', ')}`));
+      } if (err.name === 'CastError') {
+        return next(new BadRequestError(`${Object.values(err.errors).map((error) => error.message).join(', ')}`));
       }
+      return next(err);
     });
 };
 

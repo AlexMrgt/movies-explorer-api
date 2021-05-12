@@ -8,7 +8,9 @@ const userRouter = require('./user');
 const movieRouter = require('./movie');
 const { registrationValidator, loginValidator } = require('../middlewares/celebrateValidation');
 
-router.post('/signup', registrationValidator, createUser);
+router.post('/signup', createUser);
+
+// router.post('/signup', registrationValidator, createUser);
 router.post('/signin', loginValidator, signIn);
 router.delete('/signout', signOut);
 
