@@ -8,10 +8,14 @@ const { errors } = require('celebrate');
 const cors = require('cors');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const { limiter } = require('./middlewares/limiter');
+const errorHandler = require('./middlewares/errorHandler');
 
 const { PORT, DB_HOST } = require('./config');
 
 const { router } = require('./routes');
+const BadRequestError = require('./errors/BadRequestError');
+
+const { SUCCESS_START_MESSAGE, CORS_WHITELIST, CORS_ERROR_MESSAGE } = require('./utils/constants');
 
 const app = express();
 
@@ -26,20 +30,13 @@ mongoose.connect(DB_HOST, {
   console.log(err);
 });
 
-const CORS_WHITELIST = [
-  'https://movies.project.nomoredomains.monster',
-  'https://api.movies.project.nomoredomains.monster',
-  'http://movies.project.nomoredomains.monster',
-  'http://api.movies.project.nomoredomains.monster',
-  'http://localhost:3001'];
-
 const corsOption = {
   credentials: true,
   origin: function checkCorsList(origin, callback) {
     if (CORS_WHITELIST.indexOf(origin) !== -1 || !origin) {
       callback(null, true);
     } else {
-      callback(new Error('Not allowed by CORS'));
+      callback(new BadRequestError(CORS_ERROR_MESSAGE));
     }
   },
 };
@@ -47,7 +44,7 @@ const corsOption = {
 app.use(requestLogger);
 app.use(limiter);
 
-// в будущем
+// в будущем наверное надо будет поставить, но это надо тестить с фронтом
 // app.set('trust proxy', 1);
 
 app.use(cors(corsOption));
@@ -61,18 +58,9 @@ app.use(router);
 app.use(errorLogger);
 app.use(errors());
 
-app.use((err, req, res, next) => {
-  const { statusCode = 500, message } = err;
-
-  res
-    .status(statusCode)
-    .send({
-      message: statusCode === 500 ? 'Server error' : message,
-    });
-  next();
-});
+app.use(errorHandler);
 
 app.listen(PORT, () => {
   // eslint-disable-next-line no-console
-  console.log('app has been started succesfully');
+  console.log(SUCCESS_START_MESSAGE);
 });

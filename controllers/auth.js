@@ -5,9 +5,9 @@ const User = require('../models/user');
 
 const ConflictError = require('../errors/ConflictError');
 const BadRequestError = require('../errors/BadRequestError');
-const UnauthorizedError = require('../errors/UnauthorizedError');
 
 const { JWT_SECRET } = require('../config');
+const UnauthorizedError = require('../errors/UnauthorizedError');
 
 const createUser = (req, res, next) => {
   bcrypt.hash(req.body.password, 10)

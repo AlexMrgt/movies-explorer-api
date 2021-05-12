@@ -2,9 +2,10 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const validator = require('validator');
 
-const UnauthorizedError = require('../errors/UnauthorizedError');
+const NotFoundError = require('../errors/NotFoundError');
 
 const {
+  NOT_FOUND_ERROR_ON_LOGIN,
   DB_EMAIL_ERRORS,
   DB_NAME_ERRORS,
   DB_PASSWORD_ERRORS,
@@ -36,12 +37,12 @@ userSchema.statics.findUserByCredentials = function (email, password) {
   return this.findOne({ email }).select('+password')
     .then((user) => {
       if (!user) {
-        return Promise.reject(new UnauthorizedError('Неверные почта или пароль'));
+        return Promise.reject(new NotFoundError(NOT_FOUND_ERROR_ON_LOGIN));
       }
       return bcrypt.compare(password, user.password)
         .then((matched) => {
           if (!matched) {
-            return Promise.reject(new UnauthorizedError('Неверные почта или пароль'));
+            return Promise.reject(new NotFoundError(NOT_FOUND_ERROR_ON_LOGIN));
           }
           return user;
         });

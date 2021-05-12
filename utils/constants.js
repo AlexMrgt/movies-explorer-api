@@ -1,10 +1,23 @@
-// BadRequestError - нет смысла
+const SUCCESS_START_MESSAGE = 'app has been started succesfully';
+
+const CORS_WHITELIST = [
+  'https://movies.project.nomoredomains.monster',
+  'https://api.movies.project.nomoredomains.monster',
+  'http://movies.project.nomoredomains.monster',
+  'http://api.movies.project.nomoredomains.monster',
+  'http://localhost:3001',
+];
+const CORS_ERROR_MESSAGE = 'Not allowed by CORS';
+
+const DEFAULT_SERVER_ERROR_MESSAGE = 'Server error';
 
 const NOT_FOUND_SAVED_MOVIES = 'Похоже, у вас еще нет сохраненных фильмов';
 const NOT_FOUND_MOVIE_FOR_DELETE = 'Похоже, вы не сохраняли этого фильма.';
 const NOT_FOUND_USER_ON_EDIT = 'Пользователь с таким ID не найден';
 const FIRBIDDEN_ERROR_ON_DELETE_FILM = 'Удалять чужие сохраненные фильмы запрещено';
 const CONFLICT_ON_SAVE_MOVIE = 'Этот фильм уже у вас в избранном';
+const NOT_FOUND_ERROR_ON_LOGIN = 'Неверные почта или парольь';
+const UNAUTHORIZED_ERROR_ON_AUTH_CHECK = 'Нужна авторизация';
 
 const CELEBRATE_EMAIL_ERRORS = {
   TYPE: 'В поле email должны быть данные типа String',
@@ -96,11 +109,18 @@ const DB_PASSWORD_ERRORS = {
 };
 
 module.exports = {
+  SUCCESS_START_MESSAGE,
+  CORS_WHITELIST,
+  CORS_ERROR_MESSAGE,
+  DEFAULT_SERVER_ERROR_MESSAGE,
+
   NOT_FOUND_SAVED_MOVIES,
   NOT_FOUND_MOVIE_FOR_DELETE,
   NOT_FOUND_USER_ON_EDIT,
+  NOT_FOUND_ERROR_ON_LOGIN,
   FIRBIDDEN_ERROR_ON_DELETE_FILM,
   CONFLICT_ON_SAVE_MOVIE,
+  UNAUTHORIZED_ERROR_ON_AUTH_CHECK,
 
   CELEBRATE_EMAIL_ERRORS,
   CELEBRATE_PASSWORD_ERRORS,
