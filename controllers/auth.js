@@ -38,7 +38,7 @@ const signIn = (req, res, next) => {
         JWT_SECRET,
         { expiresIn: '7d' },
       );
-
+      res.status(200);
       res.cookie(
         'jwt',
         token,
@@ -56,7 +56,7 @@ const signIn = (req, res, next) => {
 };
 
 const signOut = (req, res) => {
-  res.clearCookie('jwt')
+  res.status(200).clearCookie('jwt')
     .end();
 };
 

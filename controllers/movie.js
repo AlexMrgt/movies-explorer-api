@@ -42,7 +42,7 @@ const deleteMovie = (req, res, next) => {
   const { movieId } = req.params;
   const currentUserId = req.user._id;
 
-  return Movie.findById(movieId)
+  return Movie.findById({ _id: movieId })
     .then((movie) => {
       if (!movie) {
         return next(new NotFoundError(NOT_FOUND_MOVIE_FOR_DELETE));
@@ -50,7 +50,7 @@ const deleteMovie = (req, res, next) => {
       if (movie.owner.toString() !== currentUserId) {
         return next(new ForbiddenError(FIRBIDDEN_ERROR_ON_DELETE_FILM));
       }
-      return Movie.findOneAndDelete(movieId)
+      return Movie.findOneAndDelete({ _id: movieId })
         .then((deletedMovie) => res.status(200).send(deletedMovie))
         .catch(next);
     })

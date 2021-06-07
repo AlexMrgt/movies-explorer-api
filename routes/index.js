@@ -12,12 +12,13 @@ const NotFoundError = require('../errors/NotFoundError');
 
 router.post('/signup', registrationValidator, createUser);
 router.post('/signin', loginValidator, signIn);
-router.delete('/signout', signOut);
 
 router.use(auth);
 
 router.use('/users', userRouter);
 router.use('/movies', movieRouter);
+
+router.delete('/signout', signOut);
 
 router.use('/*', () => {
   throw new NotFoundError('Ресурса по этому адресу не нашлось :[ Пожалуйста, проверьте правильность URL-адреса');

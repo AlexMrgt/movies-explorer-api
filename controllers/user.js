@@ -24,8 +24,20 @@ const editCurrentUser = async (req, res, next) => {
   const { name, email } = req.body;
 
   try {
+    const oldUser = await User.findById(_id);
+
+    if (oldUser.email === email) {
+      const updatedUser = await User.findOneAndUpdate(
+        { _id },
+        { name },
+        { new: true, runValidators: true },
+      )
+        .orFail(() => new NotFoundError(NOT_FOUND_USER_ON_EDIT));
+      return res.status(200).send(updatedUser);
+    }
+
     const updatedUser = await User.findOneAndUpdate(
-      _id,
+      { _id },
       { name, email },
       { new: true, runValidators: true },
     )
